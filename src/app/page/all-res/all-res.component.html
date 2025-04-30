@@ -1,0 +1,40 @@
+<div class="box">
+  <app-header></app-header>
+  <div class="main" *ngIf="allInfo">
+    <div class="table-box">
+      <table
+      style="
+        width: 100%;
+        color: var(--text-color);
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      "
+    >
+      <tr class="title-table">
+        <th>Час</th>
+        <th>Тип мережі</th>
+        <th>Швидкість</th>
+        <th>Затримка</th>
+        <th>IP</th>
+        <th>Провайдер</th>
+        <th>Назва хоста</th>
+      </tr>
+      <tr *ngFor="let info of allInfo">
+        <th>{{ info.time }}</th>
+        <th>{{ info.type }}</th>
+        <th>{{ info.speed }}</th>
+        <th>{{ info.rtt }}</th>
+        <th>{{ info.ip }}</th>
+        <th>{{ info.org }}</th>
+        <th>{{ info.hostname }}</th>
+      </tr>
+    </table>
+    </div>
+    
+  </div>
+  <div class="loader-box" *ngIf="!allInfo">
+    <span class="loader">Отримуємо дані</span>
+  </div>
+  <app-footer></app-footer>
+</div>

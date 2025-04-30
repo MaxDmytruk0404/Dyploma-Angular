@@ -1,0 +1,109 @@
+.box {
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+.title-table {
+  background-color: #333333;
+  color: white;
+}
+.chart-container {
+  display: flex;
+  flex-wrap: wrap;
+  height: calc(100vh - 80px); 
+  overflow-y: auto;
+}
+
+#chart1,
+#chart2 {
+  width: 50%;
+}
+
+#chart3 {
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.block-re-btn {
+  position: relative;
+  width: 200px;
+  margin: 20px auto;
+}
+
+.re-test-btn {
+  width: 100%;
+  padding: 10px;
+  color: black;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px 0 10px 0;
+  font-weight: 600;
+}
+
+.re-test-btn:hover {
+  background-color: #0000006f;
+  color: #38bdf8;
+}
+
+.block-re-btn:hover .line{
+  background: #38bdf8;
+}
+
+.line {
+  position: absolute;
+  background: black;
+}
+
+.bottom-left-horizontal {
+  bottom: 0;
+  left: 0;
+  width: 20%;
+  height: 2px;
+}
+
+.bottom-left-vertical {
+  bottom: 0;
+  left: 0px;
+  width: 2px;
+  height: 20%;
+}
+
+.top-right-horizontal {
+  top: 0px;
+  right: 0px;
+  width: 20%;
+  height: 2px;
+}
+
+.top-right-vertical {
+  top: 0px;
+  right: 0px;
+  width: 2px;
+  height: 20%;
+}
+@keyframes load {
+  0% {
+    left: 0;
+    height: 43px;
+    width: 15px;
+    transform: translateX(0);
+  }
+  50% {
+    height: 10px;
+    width: 40px;
+  }
+  100% {
+    left: 100%;
+    height: 43px;
+    width: 15px;
+    transform: translateX(-100%);
+  }
+}
+
+

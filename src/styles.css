@@ -1,1 +1,109 @@
-/* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.green {
+    background-color: green;
+    color: white;
+    border: 1px solid rgb(0, 109, 0);
+    padding: 2px 4px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.red {
+    background-color: red;
+    color: white;
+    border: 1px solid rgb(184, 0, 0);
+    padding: 2px 4px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.loader-box {
+    width: 100%;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .loader {
+    display: inline-block;
+    text-align: center;
+    line-height: 86px;
+    text-align: center;
+    position: relative;
+    padding: 0 48px;
+    font-size: 48px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+  }
+  
+  .loader:before,
+  .loader:after {
+    content: "";
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: currentColor;
+    position: absolute;
+    animation: load 0.7s infinite alternate ease-in-out;
+    top: 0;
+  }
+  
+  .loader:after {
+    top: auto;
+    bottom: 0;
+  }
+
+@keyframes load {
+    0% {
+      left: 0;
+      height: 43px;
+      width: 15px;
+      transform: translateX(0);
+    }
+    50% {
+      height: 10px;
+      width: 40px;
+    }
+    100% {
+      left: 100%;
+      height: 43px;
+      width: 15px;
+      transform: translateX(-100%);
+    }
+  }
+  
+  @media screen and (max-width: 500px){
+    
+    .loader {
+        font-size: 30px;
+    }
+  }
+
+  @media screen and (max-width: 400px){
+    
+    .loader {
+        font-size: 20px;
+    }
+    
+  }
+
+  @media screen and (max-width: 700px) {
+    .table-box {
+      overflow-x: auto;
+    }
+    table th {
+      font-size: 14px;
+    }
+  }
+  
+  @media screen and (max-width: 500px) {
+    .table-box {
+      overflow-x: auto;
+    }
+    table th {
+      font-size: 14px;
+    }
+  }

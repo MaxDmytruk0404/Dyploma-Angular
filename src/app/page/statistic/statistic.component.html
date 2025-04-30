@@ -1,0 +1,57 @@
+<div class="box">
+    <app-header></app-header>
+    <div class="main">
+        <div [ngClass]="allInfo ? 'chart-container' : 'hidden'">
+            <div id="chart1" class="chart"></div>
+            <div id="chart2" class="chart"></div>
+            <div id="chart3" class="chart"></div>
+
+        </div>
+        <div *ngIf="allInfo">
+
+       <div class="table-box">
+        <table
+        style="
+          width: 100%;
+          color: var(--text-color);
+          margin: auto;
+          margin-top: 20px;
+          margin-bottom: 20px;
+        "
+      >
+        <tr class="title-table">
+          <th>Час</th>
+          <th>Тип мережі</th>
+          <th>Швидкість</th>
+          <th>Затримка</th>
+          <th>IP</th>
+          <th>Провайдер</th>
+          <th>Назва хоста</th>
+        </tr>
+        <tr *ngFor="let info of allInfo">
+          <th>{{ info.time }}</th>
+          <th>{{ info.type }}</th>
+          <th>{{ info.speed }}</th>
+          <th>{{ info.rtt }}</th>
+          <th>{{ info.ip }}</th>
+          <th>{{ info.org }}</th>
+          <th>{{ info.hostname }}</th>
+        </tr>
+      </table>
+       </div>
+
+        <div class="block-re-btn" routerLink="/allRes">
+          <button class="re-test-btn">Переглянути усі результати</button>
+          <span class="line bottom-left-horizontal"></span>
+            <span class="line bottom-left-vertical"></span>
+            <span class="line top-right-horizontal"></span>
+            <span class="line top-right-vertical"></span>
+        </div>
+        </div>
+      </div>
+    <div class="loader-box" *ngIf="!allInfo">
+        <span class="loader">Отримуємо дані</span>
+      </div>
+    <app-footer></app-footer>
+  </div>
+  

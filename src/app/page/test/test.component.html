@@ -1,0 +1,82 @@
+<div class="box">
+  <app-header></app-header>
+  <div class="main">
+    <h2 class="title">Тест мережі</h2>
+    <div class="content">
+      <div class="button-wrapper" *ngIf="!buttonHide">
+        <button class="network-test-btn" (click)="startSpeedTest()">
+          Тестувати мережу
+        </button>
+        <span class="spinner-ring"></span>
+        <span class="spinner-ring-2"></span>
+        <span class="spinner-ring-3"></span>
+      </div>
+    </div>
+
+    <div class="loader-box" *ngIf="isTestRunning">
+      <span class="loader">Отримуємо дані</span>
+    </div>
+
+    <div class="result-box" *ngIf="allInfo">
+      <div class="resBlok-1">
+        <div class="res-miniBlok">
+          <h2>Провайдер</h2>
+          <p>{{ allInfo.org }}</p>
+          <p>
+            <span class="line bottom-left-horizontal"></span>
+            <span class="line bottom-left-vertical"></span>
+            <span class="line top-right-horizontal"></span>
+            <span class="line top-right-vertical"></span>
+          </p>
+        </div>
+
+        <div class="res-miniBlok">
+          <h2>Назва хоста</h2>
+          <p>{{ allInfo.hostname }}</p>
+          <p>
+            <span class="line bottom-left-horizontal"></span>
+            <span class="line bottom-left-vertical"></span>
+            <span class="line top-right-horizontal"></span>
+            <span class="line top-right-vertical"></span>
+          </p>
+        </div>
+      </div>
+      <div class="resBlok-2 res-miniBlok">
+        <h2>ip</h2>
+        <p>{{ allInfo.ip }}</p>
+        <p>
+          <span class="line bottom-left-horizontal"></span>
+          <span class="line bottom-left-vertical"></span>
+          <span class="line top-right-horizontal"></span>
+          <span class="line top-right-vertical"></span>
+        </p>
+      </div>
+      <div class="resBlok-3">
+        <div>
+            <h2>{{ allInfo.type }}</h2>
+            <p>Тип мережі</p>
+            <span class="spinner-rising-mini"></span>
+        </div>
+        <div>
+            <h2>{{ allInfo.rtt }} мс</h2>
+            <p>Зартимка</p>
+            <span class="spinner-rising-mini-2"></span>
+        </div>
+        <div>
+            <h2>{{ allInfo.speed }} Мб/c</h2>
+            <p>Швидкість мережі</p>
+            <span class="spinner-rising-mini-3"></span>
+        </div>
+      </div>  
+      <div class="block-re-btn">
+        <button class="re-test-btn" (click)="startSpeedTest()">Повторити тестування</button>
+        <span class="line bottom-left-horizontal"></span>
+          <span class="line bottom-left-vertical"></span>
+          <span class="line top-right-horizontal"></span>
+          <span class="line top-right-vertical"></span>
+      </div>
+    </div>
+    
+  </div>
+  <app-footer></app-footer>
+</div>
