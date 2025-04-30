@@ -26,7 +26,20 @@ export class MapOZComponent implements OnInit {
 
     this.markers.forEach((marker) => {
       const { lat, lng } = marker.position;
-      L.marker([lat, lng]).addTo(map).bindPopup(marker.title);
+
+      // Створюємо іконку з FontAwesome
+      const customIcon = L.divIcon({
+        className: 'fa', // Вказуємо клас для FontAwesome
+        html: `<i class="fas fa-map-marker-alt" style="color: red; font-size: 24px;"></i>`, // Іконка FontAwesome
+        iconSize: [30, 30], // Розмір іконки
+        iconAnchor: [10, 20], // Прив'язка іконки до центру
+        popupAnchor: [0, -30] // Розташування спливаючого вікна
+      });
+
+      // Додаємо мітку з іконкою FontAwesome
+      L.marker([lat, lng], { icon: customIcon })
+        .addTo(map)
+        .bindPopup(marker.title);
     });
 
     this.connections.forEach((conn) => {

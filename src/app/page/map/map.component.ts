@@ -62,10 +62,19 @@ export class MapComponent implements OnInit{
     }).addTo(map);
 
     this.markers.forEach(marker => {
+      const customIcon = L.divIcon({
+        className: 'fa', // Вказуємо клас для FontAwesome
+        html: `<i class="fas fa-map-marker-alt" style="color: ${marker.color}; font-size: 24px;"></i>`, // Іконка FontAwesome
+        iconSize: [30, 30], // Розмір іконки
+        iconAnchor: [10, 20], // Прив'язка іконки
+        popupAnchor: [0, -30] // Розташування спливаючого вікна
+      });
+
+      
       const { lat, lng } = marker.position;
-      L.marker([lat, lng])
-        .addTo(map)
-        .bindPopup(marker.title + `<br>Радіус покриття: ${marker.radius} м`);
+      L.marker([lat, lng], { icon: customIcon })
+      .addTo(map)
+      .bindPopup(marker.title + `<br>Радіус покриття: ${marker.radius} м`);
 
       // Додатково — коло навколо станції
       L.circle([lat, lng], {
