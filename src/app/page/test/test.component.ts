@@ -25,6 +25,7 @@ export class TestComponent {
 
   markers: any = [];
   connections: any = [];
+  allRes: any = [];
 
   // БС
   lifeTested: any;
@@ -142,7 +143,8 @@ export class TestComponent {
           ).length;
 
           this.dataService.getALllRes(this.userLogin).subscribe((data) => {
-            let allRes = data;
+            this.allRes = data;
+            this.allRes.shift();
             const now = new Date();
             const formattedDate = now
               .toLocaleString('uk-UA', {
@@ -183,10 +185,10 @@ export class TestComponent {
               },
             };
 
-            if (Array.isArray(allRes)) {
-              allRes.push(sendData);
+            if (Array.isArray(this.allRes)) {
+              this.allRes.push(sendData);
               this.dataService
-                .sendAllRes(this.userLogin, allRes)
+                .sendAllRes(this.userLogin, this.allRes)
                 .subscribe((data) => {});
             }
           });
