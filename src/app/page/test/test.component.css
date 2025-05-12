@@ -21,6 +21,23 @@
   background: linear-gradient(to right, white, #020202a7, white);
   color: white;
 }
+
+.res-box {
+  padding: 10px;
+}
+.res-box-cont {
+  width: 100%;
+  display: flex;
+}
+.res-block {
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+/* інше */
 .button-wrapper {
   position: relative;
   max-width: 400px;
@@ -60,9 +77,8 @@
 }
 
 .network-test-btn:hover {
-  background-color: rgba(86, 86, 86, 0.5);
-  color: white;
-  background: radial-gradient(circle, #4b4b4b, #ffffff);
+  border: 1px solid#38bdf8;
+  color: #38bdf8;
 }
 
 .button-wrapper:hover .spinner-ring {
@@ -146,20 +162,20 @@
   gap: 20px;
   padding: 20px;
 }
-.resBlok-2{
+.resBlok-2 {
   max-width: 275px;
   width: 100%;
   margin: auto;
   text-align: center;
 }
-.resBlok-3 {
+.res-info {
   margin-top: 20px;
   display: flex;
   justify-content: space-around;
   text-align: center;
 }
 
-.resBlok-3 div {
+.res-info div {
   border: 1px solid #4b4b4b;
   width: 200px;
   height: 200px;
@@ -169,6 +185,10 @@
   align-items: center;
   flex-direction: column;
   position: relative;
+}
+
+.res-info h2 {
+  font-size: 30px;
 }
 
 .resBlok-3 div h2 {
@@ -265,12 +285,12 @@
   height: 20%;
 }
 
-.res-miniBlok h2{
+.res-miniBlok h2 {
   text-align: center;
   margin: 10px;
 }
 
-.block-re-btn{
+.block-re-btn {
   position: relative;
   width: 200px;
   margin: 20px auto 0 auto;
@@ -292,10 +312,99 @@
   color: #38bdf8;
 }
 
-.block-re-btn:hover .line{
+.block-re-btn:hover .line {
   background: #38bdf8;
 }
 
+.res-cont {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.res-cont-block-1 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.res-cont-block-1 h2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.res-cont-block-1 h2 span {
+  font-size: 30px;
+}
+
+.res-cont-block-2 {
+  width: 100%;
+}
+
+.title-table {
+  background-color: #333333;
+  color: white;
+}
+
+.mini-title-table {
+  background-color: #333333b1;
+  color: white;
+}
+
+.menu-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.menu-box button {
+  border: 1px solid #38bdf8;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #333333;
+  color: white;
+}
+
+.menu-box button:hover {
+  background-color: white;
+  color: #38bdf8;
+}
+
+.menu-box ul {
+  display: flex;
+  gap: 10px;
+}
+
+.menu-box li {
+  list-style: none;
+  border: 1px solid grey;
+  padding: 6px 16px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.menu-box li:hover {
+  background-color: #333333;
+  color: white;
+  border-bottom: 2px solid #38bdf8 !important;
+}
+
+.active {
+  background-color: #333333;
+  color: white;
+  border-bottom: 2px solid #38bdf8 !important;
+}
+
+.table-box {
+  display: flex;
+}
 
 @keyframes spin {
   to {
@@ -303,14 +412,13 @@
   }
 }
 
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 1000px) {
   .main {
     padding: 0 20px;
   }
-  
 }
 
-@media screen and (max-width: 700px){
+@media screen and (max-width: 700px) {
   .res-miniBlok {
     max-width: auto;
   }
@@ -321,7 +429,7 @@
     font-size: 14px;
     text-align: center;
   }
-  .resBlok-3 div{
+  .resBlok-3 div {
     width: 150px;
     height: 150px;
   }
@@ -333,20 +441,20 @@
   }
 }
 
-@media screen and (max-width: 550px){
+@media screen and (max-width: 550px) {
   .resBlok-3 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 20px;
   }
-  .resBlok-3 div{
+  .resBlok-3 div {
     width: 200px;
     height: 200px;
   }
 }
 
-@media screen and (max-width: 450px){
+@media screen and (max-width: 450px) {
   .button-wrapper {
     width: 200px;
     height: 200px;
@@ -355,7 +463,7 @@
     width: 200px;
     height: 200px;
     font-size: 18px;
-  } 
+  }
   .result-box {
     padding: 0 20px 20px 20px;
   }
@@ -367,9 +475,7 @@
     max-width: none;
     width: 100%;
   }
-  .res-miniBlok{
+  .res-miniBlok {
     width: 100%;
   }
-
 }
-

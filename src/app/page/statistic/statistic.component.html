@@ -1,57 +1,119 @@
 <div class="box">
-    <app-header></app-header>
-    <div class="main">
-        <div [ngClass]="allInfo ? 'chart-container' : 'hidden'">
-            <div id="chart1" class="chart"></div>
-            <div id="chart2" class="chart"></div>
-            <div id="chart3" class="chart"></div>
-
-        </div>
-        <div *ngIf="allInfo">
-
-       <div class="table-box">
-        <table
-        style="
-          width: 100%;
-          color: var(--text-color);
-          margin: auto;
-          margin-top: 20px;
-          margin-bottom: 20px;
-        "
-      >
-        <tr class="title-table">
-          <th>Час</th>
-          <th>Тип мережі</th>
-          <th>Швидкість</th>
-          <th>Затримка</th>
-          <th>IP</th>
-          <th>Провайдер</th>
-          <th>Назва хоста</th>
-        </tr>
-        <tr *ngFor="let info of allInfo">
-          <th>{{ info.time }}</th>
-          <th>{{ info.type }}</th>
-          <th>{{ info.speed }}</th>
-          <th>{{ info.rtt }}</th>
-          <th>{{ info.ip }}</th>
-          <th>{{ info.org }}</th>
-          <th>{{ info.hostname }}</th>
-        </tr>
-      </table>
-       </div>
-
-        <div class="block-re-btn" routerLink="/allRes">
-          <button class="re-test-btn">Переглянути усі результати</button>
-          <span class="line bottom-left-horizontal"></span>
-            <span class="line bottom-left-vertical"></span>
-            <span class="line top-right-horizontal"></span>
-            <span class="line top-right-vertical"></span>
-        </div>
+  <app-header></app-header>
+  <div class="main">
+    <div *ngIf="allInfo">
+      <div class="title">
+        <div class="title-box">
+          <div class="left-box">
+            <i class="fa-solid fa-angles-left" (click)="dataFirst()"></i>
+            <i class="fa-solid fa-angle-left" (click)="dataLeft()"></i>
+          </div>
+          <h2>{{ curentData.time }}</h2>
+          <div class="right-box">
+            <i class="fa-solid fa-angle-right" (click)="dataRight()"></i>
+            <i class="fa-solid fa-angles-right" (click)="dataLast()"></i>
+          </div>
         </div>
       </div>
+
+      <div class="menu-box">
+        <ul>
+          <li [ngClass]="{ active: getResBS == true }" (click)="getRes('BS')">
+            Результат по БС
+          </li>
+          <li [ngClass]="{ active: getResOW == true }" (click)="getRes('OW')">
+            Результат по ОВ
+          </li>
+          <li routerLink="/allRes">Усі результати</li>
+        </ul>
+      </div>
+
+      <div class="chart-container" *ngIf="getResBS">
+        <!-- Графік протостованих БС -->
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="chartOptions"
+          id="chart1"
+        ></highcharts-chart>
+
+        <!-- Графік Результату тестування по Лайф-->
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="chartOptions2"
+          id="chart1"
+        ></highcharts-chart>
+
+        <table style="width: 100%">
+          <tr class="title-table">
+            <th>БС</th>
+            <th>Покоління</th>
+            <th>Оператор</th>
+            <th>Швидкість</th>
+            <th>IP</th>
+            <th>Стан</th>
+          </tr>
+          <tr
+            *ngFor="let marker of curentData.allBS"
+            [ngClass]="{
+              'bg-green': marker.status === 'Працює',
+              'bg-orange': marker.status === 'Тимчасово не працює',
+              'bg-red': marker.status === 'Не працює'
+            }"
+          >
+            <th>{{ marker.title }}</th>
+            <th>{{ marker.generation }}</th>
+            <th>{{ marker.operator }}</th>
+            <th>{{ marker.speed }} Мб/c</th>
+            <th>{{ marker.ip }}</th>
+            <th>{{ marker.status }}</th>
+          </tr>
+        </table>
+      </div>
+
+      <div class="chart-container" *ngIf="getResOW">
+        <!-- Графік протостованих ОВ -->
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="chartOptions3"
+          style="width: 100%"
+        ></highcharts-chart>
+
+        <table style="width: 100%">
+          <tr class="title-table">
+            <th>Від</th>
+            <th>До</th>
+            <th>Фізична довжина</th>
+            <th>Тип волокна</th>
+            <th>Довжина хвилі</th>
+            <th>Пропускна здатність</th>
+            <th>Максимальне загасання регенераційної ділянки</th>
+            <th>Стан</th>
+          </tr>
+          <tr
+            *ngFor="let conection of curentData.allOW"
+            [ngClass]="{
+              'bg-green': conection.color === 'green',
+              'bg-orange': conection.color === 'orange',
+              'bg-red': conection.color === 'red'
+            }"
+          >
+            <th>{{ conection.from }}</th>
+            <th>{{ conection.to }}</th>
+            <th>{{ conection.lengthKm }} км</th>
+            <th>{{ conection.fiberType }}</th>
+            <th>{{ conection.frequency }}</th>
+            <th>{{ conection.bandwidth }} Gbps</th>
+            <th>{{ conection.attenuation }} дБ</th>
+            <th *ngIf="conection.color === 'green'">Працює</th>
+            <th *ngIf="conection.color === 'orange'">Пошкоджено</th>
+            <th *ngIf="conection.color === 'red'">Не працюж</th>
+          </tr>
+        </table>
+      </div>
+    </div>
     <div class="loader-box" *ngIf="!allInfo">
-        <span class="loader">Отримуємо дані</span>
-      </div>
+      <span class="loader">Отримуємо дані</span>
+    </div>
     <app-footer></app-footer>
   </div>
-  
+</div>

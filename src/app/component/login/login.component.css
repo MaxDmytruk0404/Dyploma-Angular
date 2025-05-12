@@ -1,116 +1,125 @@
 .login-box {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    top: 0;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  top: 0;
 }
 
 .form {
-    max-width: 400px;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
--webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .form input {
-    width: 100%;
-    height: 40px;
-    padding: 5px 10px;
-    border-radius: 10px;
-    border: none;
+  width: 100%;
+  height: 40px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: none;
 }
 
 .block-re-btn {
-    position: relative;
-    width: 200px;
-    margin: auto;
-  }
-  
-  .re-test-btn {
-    width: 100%;
-    padding: 10px;
-    color: black;
-    background-color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 10px 0 10px 0;
-    font-weight: 600;
-  }
-  
-  .re-test-btn:hover {
-    background-color: #0000006f;
-    color: #38bdf8;
-  }
+  position: relative;
+  width: 200px;
+  margin: auto;
+}
 
-  .block-re-btn:hover .line{
-    background: #38bdf8;
-  }
-  
-  .line {
-    position: absolute;
-    background: black;
-  }
-  
-  .bottom-left-horizontal {
-    bottom: 0;
-    left: 0;
-    width: 20%;
-    height: 2px;
-  }
-  
-  .bottom-left-vertical {
-    bottom: 0;
-    left: 0px;
-    width: 2px;
-    height: 20%;
-  }
-  
-  .top-right-horizontal {
-    top: 0px;
-    right: 0px;
-    width: 20%;
-    height: 2px;
-  }
-  
-  .top-right-vertical {
-    top: 0px;
-    right: 0px;
-    width: 2px;
-    height: 20%;
-  }
+.re-test-btn {
+  width: 100%;
+  padding: 10px;
+  color: black;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px 0 10px 0;
+  font-weight: 600;
+}
 
-  .message {
-    text-align: center;
-    color: #9e1b30;
-  }
+.re-test-btn:hover {
+  background-color: #0000006f;
+  color: #38bdf8;
+}
 
- /* HTML: <div class="loader"></div> */
+.block-re-btn:hover .line {
+  background: #38bdf8;
+}
+
+.line {
+  position: absolute;
+  background: black;
+}
+
+.bottom-left-horizontal {
+  bottom: 0;
+  left: 0;
+  width: 20%;
+  height: 2px;
+}
+
+.bottom-left-vertical {
+  bottom: 0;
+  left: 0px;
+  width: 2px;
+  height: 20%;
+}
+
+.top-right-horizontal {
+  top: 0px;
+  right: 0px;
+  width: 20%;
+  height: 2px;
+}
+
+.top-right-vertical {
+  top: 0px;
+  right: 0px;
+  width: 2px;
+  height: 20%;
+}
+
+.message {
+  text-align: center;
+  color: #9e1b30;
+}
+
 .loader-login {
-    width: fit-content;
-    margin: auto;
-    font-weight: bold;
-    font-family: monospace;
-    font-size: 16px;
-    color:#ffffff00;
-    background:linear-gradient(90deg,#ffffff calc(50% - 0.5ch),#C02942 0 calc(50% + 0.5ch),#ffffff 0) right/calc(200% + 1ch) 100%;
-    -webkit-background-clip:text;
-            background-clip:text;
-    animation: l8 2s infinite steps(100);
+  width: fit-content;
+  margin: auto;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 16px;
+  color: #ffffff00;
+  background: linear-gradient(
+      90deg,
+      #ffffff calc(50% - 0.5ch),
+      #c02942 0 calc(50% + 0.5ch),
+      #ffffff 0
+    )
+    right/calc(200% + 1ch) 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: l8 2s infinite steps(100);
+}
+.loader-login:before {
+  content: "Шукаєм у базі...";
+}
+@keyframes l8 {
+  to {
+    background-position: left;
   }
-  .loader-login:before {
-    content:"Шукаєм у базі..."
-  }
-  @keyframes l8 {to{background-position: left}}
+}

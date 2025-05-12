@@ -1,10 +1,10 @@
 <div class="box">
   <app-header></app-header>
   <div class="main">
-    <h2 class="title">Тест мережі</h2>
+    <h2 class="title" *ngIf="!testComplite">Тест мережі</h2>
     <div class="content">
       <div class="button-wrapper" *ngIf="!buttonHide">
-        <button class="network-test-btn" (click)="startSpeedTest()">
+        <button class="network-test-btn" (click)="runTest()">
           Тестувати мережу
         </button>
         <span class="spinner-ring"></span>
@@ -13,70 +13,261 @@
       </div>
     </div>
 
-    <div class="loader-box" *ngIf="isTestRunning">
-      <span class="loader">Отримуємо дані</span>
-    </div>
+    <div class="start-box">
+      <div class="res-box" *ngIf="isTestRunning">
+        <div class="loader-box">
+          <span class="loader">Отримуємо дані</span>
+        </div>
+      </div>
 
-    <div class="result-box" *ngIf="allInfo">
-      <div class="resBlok-1">
-        <div class="res-miniBlok">
-          <h2>Провайдер</h2>
-          <p>{{ allInfo.org }}</p>
-          <p>
-            <span class="line bottom-left-horizontal"></span>
-            <span class="line bottom-left-vertical"></span>
-            <span class="line top-right-horizontal"></span>
-            <span class="line top-right-vertical"></span>
-          </p>
+      <div class="res-box" *ngIf="testComplite">
+        <div class="menu-box">
+          <button (click)="runTest()">Тестувати ще раз</button>
+          <ul>
+            <li [ngClass]="{ active: getResBS == true }" (click)="getRes('BS')">
+              Результат по БС
+            </li>
+            <li [ngClass]="{ active: getResOW == true }" (click)="getRes('OW')">
+              Результат по ОВ
+            </li>
+          </ul>
         </div>
 
-        <div class="res-miniBlok">
-          <h2>Назва хоста</h2>
-          <p>{{ allInfo.hostname }}</p>
-          <p>
-            <span class="line bottom-left-horizontal"></span>
-            <span class="line bottom-left-vertical"></span>
-            <span class="line top-right-horizontal"></span>
-            <span class="line top-right-vertical"></span>
-          </p>
+        <h2 class="title">Результат</h2>
+
+        <div class="res-box-cont">
+          <!-- Результат тесту по БС -->
+          <div class="res-block" *ngIf="getResBS">
+            <div class="res-miniBlok">
+              <h2>Результат тестування Базових станцій</h2>
+              <p>
+                <span class="line bottom-left-horizontal"></span>
+                <span class="line bottom-left-vertical"></span>
+                <span class="line top-right-horizontal"></span>
+                <span class="line top-right-vertical"></span>
+              </p>
+            </div>
+            <div class="res-cont">
+              <div class="res-cont-block-1">
+                <div class="table-box">
+                  <table style="width: 25%">
+                    <tr class="mini-title-table">
+                      <th colspan="2">Усі оператори</th>
+                    </tr>
+                    <tr class="title-table">
+                      <th>Категорія стану</th>
+                      <th>Кількість</th>
+                    </tr>
+                    <tr>
+                      <th>Протестовано БС</th>
+                      <th>{{ markers.length }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього працює</th>
+                      <th style="color: green">{{ activeBS }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього темчасово не працює</th>
+                      <th style="color: orange">{{ timeNoAtiveBS }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього не працює</th>
+                      <th style="color: red">{{ noActiveBS }}</th>
+                    </tr>
+                  </table>
+
+                  <!-- Таблиця по Лайф -->
+                  <table style="width: 25%">
+                    <tr class="mini-title-table">
+                      <th colspan="2" style="color: yellow">LifeCell</th>
+                    </tr>
+                    <tr class="title-table">
+                      <th>Категорія стану</th>
+                      <th>Кількість</th>
+                    </tr>
+                    <tr>
+                      <th>Протестовано БС</th>
+                      <th>{{ lifeTested }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього працює</th>
+                      <th style="color: green">{{ lifeActiveBS }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього темчасово не працює</th>
+                      <th style="color: orange">{{ lifeTimeNoAtiveBS }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього не працює</th>
+                      <th style="color: red">{{ lifeNoActiveBS }}</th>
+                    </tr>
+                  </table>
+
+                  <!-- Таблиця по Київстар -->
+
+                  <table style="width: 25%">
+                    <tr class="mini-title-table">
+                      <th colspan="2" style="color: rgb(37, 153, 255)">
+                        Kyivstar
+                      </th>
+                    </tr>
+                    <tr class="title-table">
+                      <th>Категорія стану</th>
+                      <th>Кількість</th>
+                    </tr>
+                    <tr>
+                      <th>Протистовано Kyivstar БС</th>
+                      <th>kyivstarTested</th>
+                    </tr>
+                    <tr>
+                      <th>Всього працює</th>
+                      <th style="color: green">{{ kyivstarActiveBS }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього темчасово не працює</th>
+                      <th style="color: orange">{{ kyivstarTimeNoAtiveBS }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього не працює</th>
+                      <th style="color: red">{{ kyivstarNoActiveBS }}</th>
+                    </tr>
+                  </table>
+
+                  <!-- Таблиця по Водафону -->
+                  <table style="width: 25%">
+                    <tr class="mini-title-table">
+                      <th colspan="2" style="color: rgb(197, 0, 0)">
+                        Vodafone
+                      </th>
+                    </tr>
+                    <tr class="title-table">
+                      <th>Категорія стану</th>
+                      <th>Кількість</th>
+                    </tr>
+                    <tr>
+                      <th>Протистовано Vodafone</th>
+                      <th>{{ vodafoneTested }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього працює</th>
+                      <th style="color: green">{{ vodafoneActiveBS }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього темчасово не працює</th>
+                      <th style="color: orange">{{ vodafoneTimeNoAtiveBS }}</th>
+                    </tr>
+                    <tr>
+                      <th>Всього не працює</th>
+                      <th style="color: red">{{ vodafoneNoActiveBS }}</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="res-cont-block-2">
+                <!-- Таблиця з повною інформацією -->
+                <table style="width: 100%">
+                  <tr class="title-table">
+                    <th>БС</th>
+                    <th>Покоління</th>
+                    <th>Оператор</th>
+                    <th>Швидкість</th>
+                    <th>IP</th>
+                    <th>Стан</th>
+                  </tr>
+                  <tr
+                    *ngFor="let marker of markers"
+                    [ngClass]="{
+                      'bg-green': marker.status === 'Працює',
+                      'bg-orange': marker.status === 'Тимчасово не працює',
+                      'bg-red': marker.status === 'Не працює'
+                    }"
+                  >
+                    <th>{{ marker.title }}</th>
+                    <th>{{ marker.generation }}</th>
+                    <th>{{ marker.operator }}</th>
+                    <th>{{ marker.speed }} Мб/c</th>
+                    <th>{{ marker.ip }}</th>
+                    <th>{{ marker.status }}</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Результат тесту ОВ -->
+          <div class="res-block" *ngIf="getResOW">
+            <div class="res-miniBlok">
+              <h2>Результат тестування Отичних волокон</h2>
+              <p>
+                <span class="line bottom-left-horizontal"></span>
+                <span class="line bottom-left-vertical"></span>
+                <span class="line top-right-horizontal"></span>
+                <span class="line top-right-vertical"></span>
+              </p>
+            </div>
+            <div class="res-cont">
+              <div class="res-cont-block-1">
+                <table style="width: 100%">
+                  <tr class="title-table">
+                    <th>Категорія стану</th>
+                    <th>Кількість</th>
+                  </tr>
+                  <tr>
+                    <th>Протестовано ОВ</th>
+                    <th>{{ connections.length }}</th>
+                  </tr>
+                  <tr>
+                    <th>Всього працює</th>
+                    <th style="color: green">{{ activeOW }}</th>
+                  </tr>
+                  <tr>
+                    <th>Пошкоджено</th>
+                    <th style="color: orange">{{ timeNoActiveOW }}</th>
+                  </tr>
+                  <tr>
+                    <th>Всього не працює</th>
+                    <th style="color: red">{{ noActiveOW }}</th>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="res-cont-block-2">
+                <table style="width: 100%">
+                  <tr class="title-table">
+                    <th>Від</th>
+                    <th>До</th>
+                    <th>Фізична довжина</th>
+                    <th>Тип волокна</th>
+                    <th>Довжина хвилі</th>
+                    <th>Пропускна здатність</th>
+                    <th>Максимальне загасання регенераційної ділянки</th>
+                    <th>Стан</th>
+                  </tr>
+                  <tr
+                    *ngFor="let conection of connections"
+                    [ngClass]="{
+                      'bg-green': conection.color === 'green',
+                      'bg-orange': conection.color === 'orange',
+                      'bg-red': conection.color === 'red'
+                    }"
+                  >
+                    <th>{{ conection.from }}</th>
+                    <th>{{ conection.to }}</th>
+                    <th>{{ conection.lengthKm }} км</th>
+                    <th>{{ conection.fiberType }}</th>
+                    <th>{{ conection.frequency }}</th>
+                    <th>{{ conection.bandwidth }} Gbps</th>
+                    <th>{{ conection.attenuation }} дБ</th>
+                    <th *ngIf="conection.color === 'green'">Працює</th>
+                    <th *ngIf="conection.color === 'orange'">Пошкоджено</th>
+                    <th *ngIf="conection.color === 'red'">Не працюж</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="resBlok-2 res-miniBlok">
-        <h2>ip</h2>
-        <p>{{ allInfo.ip }}</p>
-        <p>
-          <span class="line bottom-left-horizontal"></span>
-          <span class="line bottom-left-vertical"></span>
-          <span class="line top-right-horizontal"></span>
-          <span class="line top-right-vertical"></span>
-        </p>
-      </div>
-      <div class="resBlok-3">
-        <div>
-            <h2>{{ allInfo.type }}</h2>
-            <p>Тип мережі</p>
-            <span class="spinner-rising-mini"></span>
-        </div>
-        <div>
-            <h2>{{ allInfo.rtt }} мс</h2>
-            <p>Зартимка</p>
-            <span class="spinner-rising-mini-2"></span>
-        </div>
-        <div>
-            <h2>{{ allInfo.speed }} Мб/c</h2>
-            <p>Швидкість мережі</p>
-            <span class="spinner-rising-mini-3"></span>
-        </div>
-      </div>  
-      <div class="block-re-btn">
-        <button class="re-test-btn" (click)="startSpeedTest()">Повторити тестування</button>
-        <span class="line bottom-left-horizontal"></span>
-          <span class="line bottom-left-vertical"></span>
-          <span class="line top-right-horizontal"></span>
-          <span class="line top-right-vertical"></span>
       </div>
     </div>
-    
   </div>
   <app-footer></app-footer>
 </div>

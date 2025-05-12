@@ -3,35 +3,41 @@
   <div class="main" *ngIf="allInfo">
     <div class="table-box">
       <table
-      style="
-        width: 100%;
-        color: var(--text-color);
-        margin: auto;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      "
-    >
-      <tr class="title-table">
-        <th>Час</th>
-        <th>Тип мережі</th>
-        <th>Швидкість</th>
-        <th>Затримка</th>
-        <th>IP</th>
-        <th>Провайдер</th>
-        <th>Назва хоста</th>
-      </tr>
-      <tr *ngFor="let info of allInfo">
-        <th>{{ info.time }}</th>
-        <th>{{ info.type }}</th>
-        <th>{{ info.speed }}</th>
-        <th>{{ info.rtt }}</th>
-        <th>{{ info.ip }}</th>
-        <th>{{ info.org }}</th>
-        <th>{{ info.hostname }}</th>
-      </tr>
-    </table>
+        style="
+          width: 100%;
+          color: var(--text-color);
+          margin: auto;
+          margin-top: 20px;
+          margin-bottom: 20px;
+        "
+      >
+        <tr class="title-table">
+          <th>Дата</th>
+          <th>Протестовано БС</th>
+          <th>Працює БС</th>
+          <th>Тимчасово не працює БС</th>
+          <th>Не працює БС</th>
+          <th>Протестовано ОВ</th>
+          <th>Працює ОВ</th>
+          <th>Пошкоджено ОВ</th>
+          <th>Не працює ОВ</th>
+        </tr>
+        <tr
+          *ngFor="let info of allInfo; let i = index"
+          (click)="goToStatistick(i)"
+        >
+          <th>{{ info.time }}</th>
+          <th>{{ info.allBS.length }}</th>
+          <th style="color: green">{{ info.testBSRes.activeBS }}</th>
+          <th style="color: orange">{{ info.testBSRes.timeNoActiveBS }}</th>
+          <th style="color: red">{{ info.testBSRes.noActiveBS }}</th>
+          <th>{{ info.allOW.length }}</th>
+          <th style="color: green">{{ info.testOWRes.activeOW }}</th>
+          <th style="color: orange">{{ info.testOWRes.timeNoActiveOW }}</th>
+          <th style="color: red">{{ info.testOWRes.noActiveOW }}</th>
+        </tr>
+      </table>
     </div>
-    
   </div>
   <div class="loader-box" *ngIf="!allInfo">
     <span class="loader">Отримуємо дані</span>

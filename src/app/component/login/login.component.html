@@ -1,15 +1,15 @@
 <div class="login-box" *ngIf="!logined">
-    <div class="form">
-        <input type="text" placeholder="name" [(ngModel)]="name">
-        <input type="text" placeholder="paassword" [(ngModel)]="password">
-        <div class="block-re-btn" (click)="login()">
-            <button class="re-test-btn">Увійти</button>
-            <span class="line bottom-left-horizontal"></span>
-              <span class="line bottom-left-vertical"></span>
-              <span class="line top-right-horizontal"></span>
-              <span class="line top-right-vertical"></span>
-          </div>
-          <p *ngIf="message" class="message">{{message}}</p>
-          <p *ngIf="procesed" class="loader-login"></p>
+  <div class="form">
+    <input type="text" placeholder="name" [(ngModel)]="name" />
+    <input type="text" placeholder="paassword" [(ngModel)]="password" />
+    <div class="block-re-btn" (click)="login()">
+      <button class="re-test-btn">Увійти</button>
+      <span class="line bottom-left-horizontal"></span>
+      <span class="line bottom-left-vertical"></span>
+      <span class="line top-right-horizontal"></span>
+      <span class="line top-right-vertical"></span>
     </div>
+    <p *ngIf="message" class="message">{{ message }}</p>
+    <p *ngIf="procesed" class="loader-login"></p>
+  </div>
 </div>

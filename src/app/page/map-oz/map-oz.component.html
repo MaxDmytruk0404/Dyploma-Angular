@@ -1,5 +1,18 @@
 <div class="box">
-    <app-header></app-header>
-    <div id="map" class="map"></div>
-    <app-footer></app-footer>
+  <app-header></app-header>
+  <div class="title">
+    <div class="title-box">
+      <div class="left-box">
+        <i class="fa-solid fa-angles-left" (click)="dataFirst()"></i>
+        <i class="fa-solid fa-angle-left" (click)="dataLeft()"></i>
+      </div>
+      <h2>{{ curentData.time }}</h2>
+      <div class="right-box">
+        <i class="fa-solid fa-angle-right" (click)="dataRight()"></i>
+        <i class="fa-solid fa-angles-right" (click)="dataLast()"></i>
+      </div>
+    </div>
+  </div>
+  <div id="map" class="map"></div>
+  <app-footer></app-footer>
 </div>

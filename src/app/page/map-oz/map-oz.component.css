@@ -1,11 +1,50 @@
-#map, .map{
-    width: 100%;
-    height: 100%;
-    margin-bottom: 40px;
-    margin-top: 40px;
+#map,
+.map {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 40px;
 }
 .box {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.title-box {
+  max-width: 800px;
+  margin: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+.left-box,
+.right-box {
+  display: flex;
+  gap: 10px;
+}
+.fa-angle-left,
+.fa-angle-right {
+  border: 1px solid white;
+  padding: 5px 10px;
+  border-radius: 100%;
+  cursor: pointer;
+}
+.fa-angles-left,
+.fa-angles-right {
+  border: 1px solid white;
+  padding: 5px 5px;
+  border-radius: 100%;
+  cursor: pointer;
+}
+.title {
+  width: 100%;
+  margin: auto;
+  margin-top: 40px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+  padding: 5px;
+  background: linear-gradient(to right, white, #020202a7, white);
+  color: white;
 }

@@ -4,164 +4,248 @@ import * as Highcharts from 'highcharts';
 import { HeaderComponent } from '../../component/header/header.component';
 import { FooterComponent } from '../../component/footer/footer.component';
 import { DataService } from '../../service/data/data.service';
-import { RouterLink } from '@angular/router';
 import { SendInfoService } from '../../service/sendInfo/send-info.service';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-statistic',
-  imports: [CommonModule, HeaderComponent, FooterComponent, RouterLink],
+  imports: [
+    CommonModule,
+    HeaderComponent,
+    FooterComponent,
+    HighchartsChartModule,
+    RouterLink,
+  ],
   templateUrl: './statistic.component.html',
   styleUrl: './statistic.component.css',
 })
 export class StatisticComponent implements OnInit {
   allInfo: any;
   userName: any;
+  curentData: any;
+  dataOperator: any;
+  getResBS: boolean = true;
+  getResOW: boolean = false;
+  curentPage: any;
 
-  constructor(private dataService: DataService, private sendInfoService: SendInfoService) {}
+  Highcharts: typeof Highcharts = Highcharts;
+  chartOptions: Highcharts.Options = {};
+  chartOptions2: Highcharts.Options = {};
+  chartOptions3: Highcharts.Options = {};
+
+  constructor(
+    private dataService: DataService,
+    private sendInfoService: SendInfoService
+  ) {}
 
   ngOnInit(): void {
-    this.getInfo();
-  }
-
-  getInfo() {
-    
-    this.sendInfoService.data$.subscribe(data => {
+    this.sendInfoService.userLogin$.subscribe((data) => {
       this.userName = data;
-      this.dataService.getData(this.userName).subscribe((data) => {
-        this.allInfo = data.exists.dataInfo;
-  
-        // Поточна дата
-        const todayStart = new Date();
-        todayStart.setHours(0, 0, 0, 0); // Початок дня
-        const todayEnd = new Date();
-        todayEnd.setHours(23, 59, 59, 999); // Кінець дня
-  
-        // Дата для початку тижня
-        const weekStart = new Date(todayStart);
-        weekStart.setDate(todayStart.getDate() - todayStart.getDay()); // Понеділок цього тижня
-  
-        // Дата для початку місяця
-        const monthStart = new Date(
-          todayStart.getFullYear(),
-          todayStart.getMonth(),
-          1
-        ); // Перший день місяця
-  
-        // Фільтруємо дані за сьогоднішній день
-        const filteredToday = this.filterDataByDateRange(
-          this.allInfo,
-          todayStart,
-          todayEnd
-        );
-        // Фільтруємо дані за тиждень
-        const filteredWeek = this.filterDataByDateRange(
-          this.allInfo,
-          weekStart,
-          todayEnd
-        );
-        // Фільтруємо дані за місяць
-        const filteredMonth = this.filterDataByDateRange(
-          this.allInfo,
-          monthStart,
-          todayEnd
-        );
-  
-        // Побудова графіків
-        this.createChart(
-          'chart1',
-          'Графік залежності пропускної здатності за сьогоднішній день',
-          filteredToday
-        );
-        this.createChart(
-          'chart2',
-          'Графік залежності пропускної здатності за цей тиждень',
-          filteredWeek
-        );
-        this.createChart(
-          'chart3',
-          'Графік залежності пропускної здатності за цей місяць',
-          filteredMonth
-        );
-      });
-    })
-
-    
-  }
-
-  // Фільтрація даних за діапазоном дат
-  filterDataByDateRange(data: any[], startDate: Date, endDate: Date) {
-    return data.filter((info) => {
-      const infoDate = new Date(info.time);
-      return infoDate >= startDate && infoDate <= endDate;
+      this.getInfo(this.userName);
+    });
+    this.sendInfoService.sendData$.subscribe((data) => {
+      if (data !== undefined) {
+        this.curentPage = data;
+      }
     });
   }
 
-  // Функція для створення графіка
-  createChart(containerId: string, title: string, filteredData: any[]) {
-    let dataTime = [];
-    for (let info of filteredData) {
-      let newInfo = [new Date(info.time).getTime(), Number(info.speed)];
-      dataTime.push(newInfo);
-    }
+  getInfo(userName: string) {
+    this.dataService.getALllRes(userName).subscribe((data) => {
+      this.allInfo = data;
+      if (this.curentPage == undefined) {
+        this.sendInfoService.sendDataInfo(this.allInfo.length - 1);
+      }
+      this.updateInfo();
+    });
+  }
 
-    this.allInfo = this.allInfo.slice(-20).reverse();
-
-    Highcharts.chart(containerId, {
-      chart: {
-        zooming: {
-          type: 'x',
-        },
-      },
+  chart1() {
+    this.chartOptions = {
       title: {
-        text: title,
+        text: 'Протестованих БС',
       },
-      xAxis: {
-        type: 'datetime',
-      },
-      yAxis: {
-        title: {
-          text: 'Пропускна здатність',
-        },
-      },
-      time: {
-        timezoneOffset: new Date().getTimezoneOffset() * 60 * 1000,
-      },
-      legend: {
-        enabled: false,
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}</b>',
       },
       plotOptions: {
-        area: {
-          marker: {
-            radius: 2,
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.y}',
           },
-          lineWidth: 1,
-          color: {
-            linearGradient: {
-              x1: 0,
-              y1: 0,
-              x2: 0,
-              y2: 1,
-            },
-            stops: [
-              [0, 'rgb(199, 113, 243)'],
-              [0.7, 'rgb(76, 175, 254)'],
-            ],
-          },
-          states: {
-            hover: {
-              lineWidth: 1,
-            },
-          },
-          threshold: null,
         },
       },
       series: [
         {
-          type: 'area',
-          name: 'Пропускна здатність',
-          data: dataTime,
+          type: 'pie',
+          name: 'Кількість',
+          data: [
+            {
+              name: 'Лайф',
+              y: this.curentData.testBSRes.lifeTested,
+              color: '#FFBF00',
+            },
+            {
+              name: 'Київстар',
+              y: this.curentData.testBSRes.kyivstarTested,
+              color: '#007FFF',
+            },
+            {
+              name: 'Водафон',
+              y: this.curentData.testBSRes.vodafoneTested,
+              color: '#E32636',
+            },
+          ],
         },
       ],
-    });
+    };
+  }
+
+  chart2() {
+    this.chartOptions2 = {
+      chart: {
+        type: 'column',
+      },
+      title: {
+        text: 'Стан БС',
+      },
+      xAxis: {
+        categories: ['Всього', 'Лайф', 'Київстар', 'Водафон'],
+        crosshair: true,
+      },
+      plotOptions: {
+        column: {
+          pointPadding: 0.2,
+          borderWidth: 0,
+        },
+      },
+      series: [
+        {
+          type: 'column',
+          color: '#A4C639',
+          name: 'Активні',
+          data: [
+            this.curentData.testBSRes.activeBS,
+            this.curentData.testBSRes.lifeActiveBS,
+            this.curentData.testBSRes.kyivstarActiveBS,
+            this.curentData.testBSRes.vodafoneActiveBS,
+          ],
+        },
+        {
+          type: 'column',
+          color: '#FF7E00',
+          name: 'Тимчасвоно не Активні',
+          data: [
+            this.curentData.testBSRes.timeNoActiveBS,
+            this.curentData.testBSRes.lifeTimeNoActiveBS,
+            this.curentData.testBSRes.kyivstarTimeNoAtiveBS,
+            this.curentData.testBSRes.vodafoneTimeNoAtiveBS,
+          ],
+        },
+        {
+          type: 'column',
+          color: '#E32636',
+          name: 'Не Активні',
+          data: [
+            this.curentData.testBSRes.noActiveBS,
+            this.curentData.testBSRes.lifeNoActiveBS,
+            this.curentData.testBSRes.kyivstarNoAtiveBS,
+            this.curentData.testBSRes.vodafoneNoActiveBS,
+          ],
+        },
+      ],
+    };
+  }
+
+  chart3() {
+    this.chartOptions3 = {
+      title: {
+        text: 'Результат тесту ОВ',
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}</b>',
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.y}',
+          },
+        },
+      },
+      series: [
+        {
+          type: 'pie',
+          name: 'Кількість',
+          data: [
+            {
+              name: 'Працює',
+              y: this.curentData.testOWRes.activeOW,
+              color: '#A4C639',
+            },
+            {
+              name: 'Пошкоджено',
+              y: this.curentData.testOWRes.timeNoActiveOW,
+              color: '#FF7E00',
+            },
+            {
+              name: 'Не праює',
+              y: this.curentData.testOWRes.noActiveOW,
+              color: '#E32636',
+            },
+          ],
+        },
+      ],
+    };
+  }
+
+  getRes(param: string) {
+    this.getResBS = false;
+    this.getResOW = false;
+
+    if (param == 'BS') {
+      this.getResBS = true;
+    } else if (param == 'OW') {
+      this.getResOW = true;
+    } else {
+      this.getResBS = true;
+    }
+  }
+
+  dataLeft() {
+    if (this.curentPage > 0) {
+      this.sendInfoService.sendDataInfo(this.curentPage - 1);
+      this.updateInfo();
+    }
+  }
+
+  dataRight() {
+    if (this.curentPage < this.allInfo.length - 1) {
+      this.sendInfoService.sendDataInfo(this.curentPage + 1);
+      this.updateInfo();
+    }
+  }
+
+  dataFirst() {
+    this.sendInfoService.sendDataInfo(0);
+    this.updateInfo();
+  }
+
+  dataLast() {
+    this.sendInfoService.sendDataInfo(this.allInfo.length - 1);
+    this.updateInfo();
+  }
+
+  updateInfo() {
+    this.curentData = this.allInfo[this.curentPage];
+    this.chart1();
+    this.chart2();
+    this.chart3();
   }
 }

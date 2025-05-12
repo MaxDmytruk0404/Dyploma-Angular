@@ -12,97 +12,202 @@ import { SendInfoService } from '../../service/sendInfo/send-info.service';
   selector: 'app-test',
   imports: [CommonModule, HeaderComponent, FooterComponent, SpeedTestModule],
   templateUrl: './test.component.html',
-  styleUrl: './test.component.css'
+  styleUrl: './test.component.css',
 })
-export class TestComponent implements OnInit{
-  ipInfo: any;
-  speed: any;
-  ping: any;
-  allInfo: any
+export class TestComponent {
   isTestRunning: boolean = false;
   buttonHide: boolean = false;
-  userName: any;
+  testComplite: boolean = false;
+  userLogin: any;
 
-  constructor(private speedTestService: SpeedTestService, private http: HttpClient, private dataService: DataService, private sendInfoService: SendInfoService) {}
+  getResBS: boolean = true;
+  getResOW: boolean = false;
 
-  ngOnInit(): void {
-    this.sendInfoService.data$.subscribe(data=> {
-      this.userName = data;
-    })
-  }
+  markers: any = [];
+  connections: any = [];
 
- async startSpeedTest() {
-  this.allInfo = '';
+  // БС
+  lifeTested: any;
+  kyivstarTested: any;
+  vodafoneTested: any;
 
-    this.isTestRunning = true;
+  activeBS: any;
+  timeNoAtiveBS: any;
+  noActiveBS: any;
+
+  lifeActiveBS: any;
+  lifeTimeNoAtiveBS: any;
+  lifeNoActiveBS: any;
+
+  kyivstarActiveBS: any;
+  kyivstarTimeNoAtiveBS: any;
+  kyivstarNoActiveBS: any;
+
+  vodafoneActiveBS: any;
+  vodafoneTimeNoAtiveBS: any;
+  vodafoneNoActiveBS: any;
+
+  // ОВ
+
+  activeOW: any;
+  timeNoActiveOW: any;
+  noActiveOW: any;
+
+  constructor(
+    private speedTestService: SpeedTestService,
+    private http: HttpClient,
+    private dataService: DataService,
+    private sendInfoService: SendInfoService
+  ) {}
+
+  runTest() {
     this.buttonHide = true;
-    const speed = (await this.getSpeedUntilDefined()).toFixed(1);
+    this.testComplite = false;
+    this.isTestRunning = true;
 
-      const connection =
-      (navigator as any).connection ||
-      (navigator as any).mozConnection ||
-      (navigator as any).webkitConnection;
+    this.sendInfoService.userLogin$.subscribe((data) => {
+      this.userLogin = data;
 
-      this.ping = connection.ping
+      this.dataService.getBSInfo(this.userLogin).subscribe((data) => {
+        this.markers = data;
 
-      this.http
-        .get('https://ipinfo.io/json?token=fd30d19fb836b6')
-        .subscribe((data) => {
-          this.ipInfo = data;
-          const connection =
-            (navigator as any).connection ||
-            (navigator as any).mozConnection ||
-            (navigator as any).webkitConnection;
+        // БС
+        const life = this.markers.filter(
+          (marker: { operator: string }) => marker.operator == 'Lifecell'
+        );
+        const kyivstar = this.markers.filter(
+          (marker: { operator: string }) => marker.operator == 'Kyivstar'
+        );
+        const vodafone = this.markers.filter(
+          (marker: { operator: string }) => marker.operator == 'Vodafone'
+        );
 
-            const currentTime = new Date();
-            const timeZone = 'Europe/Kiev';
-            const options = { timeZone, hour12: false };
-            const localDateString = currentTime.toLocaleString(
-              'en-US',
-              options
-            );
-            const unixTime = Math.floor(Date.now() / 1000);
+        this.lifeTested = life.length;
+        this.kyivstarTested = kyivstar.length;
+        this.vodafoneTested = vodafone.length;
 
+        this.activeBS = this.markers.filter(
+          (marker: { status: string }) => marker.status == 'Працює'
+        ).length;
+        this.noActiveBS = this.markers.filter(
+          (marker: { status: string }) => marker.status == 'Не працює'
+        ).length;
+        this.timeNoAtiveBS = this.markers.filter(
+          (marker: { status: string }) => marker.status == 'Тимчасово не працює'
+        ).length;
 
-          if (connection && this.ipInfo) {
-            let connectionInfo = {
-              ip: this.ipInfo.ip,
-              org: this.ipInfo.org,
-              hostname: this.ipInfo.hostname,
-              type: connection.effectiveType,
-              speed: speed,
-              rtt: connection.rtt,
-              time: localDateString,
-              timems: unixTime,
+        this.lifeActiveBS = life.filter(
+          (marker: { status: string }) => marker.status == 'Працює'
+        ).length;
+        this.lifeNoActiveBS = life.filter(
+          (marker: { status: string }) => marker.status == 'Не працює'
+        ).length;
+        this.lifeTimeNoAtiveBS = life.filter(
+          (marker: { status: string }) => marker.status == 'Тимчасово не працює'
+        ).length;
+
+        this.kyivstarActiveBS = kyivstar.filter(
+          (marker: { status: string }) => marker.status == 'Працює'
+        ).length;
+        this.kyivstarNoActiveBS = kyivstar.filter(
+          (marker: { status: string }) => marker.status == 'Не працює'
+        ).length;
+        this.kyivstarTimeNoAtiveBS = kyivstar.filter(
+          (marker: { status: string }) => marker.status == 'Тимчасово не працює'
+        ).length;
+
+        this.vodafoneActiveBS = vodafone.filter(
+          (marker: { status: string }) => marker.status == 'Працює'
+        ).length;
+        this.vodafoneNoActiveBS = vodafone.filter(
+          (marker: { status: string }) => marker.status == 'Не працює'
+        ).length;
+        this.vodafoneTimeNoAtiveBS = vodafone.filter(
+          (marker: { status: string }) => marker.status == 'Тимчасово не працює'
+        ).length;
+
+        this.dataService.getOWInfo(this.userLogin).subscribe((data) => {
+          this.connections = data;
+
+          // ОВ
+
+          this.activeOW = this.connections.filter(
+            (conection: { color: string }) => conection.color == 'green'
+          ).length;
+          this.timeNoActiveOW = this.connections.filter(
+            (conection: { color: string }) => conection.color == 'orange'
+          ).length;
+          this.noActiveOW = this.connections.filter(
+            (conection: { color: string }) => conection.color == 'red'
+          ).length;
+
+          this.dataService.getALllRes(this.userLogin).subscribe((data) => {
+            let allRes = data;
+            const now = new Date();
+            const formattedDate = now
+              .toLocaleString('uk-UA', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+              })
+              .replace(',', '');
+
+            const sendData = {
+              time: formattedDate,
+              allBS: this.markers,
+              allOW: this.connections,
+              testBSRes: {
+                lifeTested: this.lifeTested,
+                kyivstarTested: this.kyivstarTested,
+                vodafoneTested: this.vodafoneTested,
+                activeBS: this.activeBS,
+                timeNoActiveBS: this.timeNoAtiveBS,
+                noActiveBS: this.noActiveBS,
+                lifeActiveBS: this.lifeActiveBS,
+                lifeTimeNoActiveBS: this.lifeTimeNoAtiveBS,
+                lifeNoActiveBS: this.lifeNoActiveBS,
+                kyivstarActiveBS: this.kyivstarActiveBS,
+                kyivstarTimeNoAtiveBS: this.kyivstarTimeNoAtiveBS,
+                kyivstarNoAtiveBS: this.kyivstarNoActiveBS,
+                vodafoneActiveBS: this.vodafoneActiveBS,
+                vodafoneTimeNoAtiveBS: this.vodafoneTimeNoAtiveBS,
+                vodafoneNoActiveBS: this.vodafoneNoActiveBS,
+              },
+              testOWRes: {
+                activeOW: this.activeOW,
+                timeNoActiveOW: this.timeNoActiveOW,
+                noActiveOW: this.noActiveOW,
+              },
             };
 
-            this.dataService.getData(this.userName).subscribe((data) => {
-              const getData = data.exists;
-              getData.dataInfo.push(connectionInfo);
-              this.dataService.sendData(getData, this.userName).subscribe((data)=>{});
-              this.allInfo = connectionInfo;
-              this.isTestRunning = false;
-            })
+            if (Array.isArray(allRes)) {
+              allRes.push(sendData);
+              this.dataService
+                .sendAllRes(this.userLogin, allRes)
+                .subscribe((data) => {});
+            }
+          });
 
-          } 
+          this.isTestRunning = false;
+          this.testComplite = true;
         });
-     
-  }
-
- getSpeedUntilDefined(): Promise<number> {
-    return new Promise((resolve) => {
-      const checkSpeed = () => {
-        this.speedTestService.getMbps().subscribe((speed) => {
-          if (speed !== undefined) {
-            resolve(speed);
-          } else {
-            setTimeout(checkSpeed, 1000); // Чекаємо 1 секунду перед наступною спробою
-          }
-        });
-      };
-  
-      checkSpeed(); // Починаємо перевірку
+      });
     });
   }
-  
+
+  getRes(param: string) {
+    this.getResBS = false;
+    this.getResOW = false;
+
+    if (param == 'BS') {
+      this.getResBS = true;
+    } else if (param == 'OW') {
+      this.getResOW = true;
+    } else {
+      this.getResBS = true;
+    }
+  }
 }

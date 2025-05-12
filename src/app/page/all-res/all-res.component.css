@@ -45,6 +45,14 @@
   bottom: 0;
 }
 
+tr {
+  cursor: pointer;
+}
+
+tr:hover {
+  background-color: #b6b6b6;
+}
+
 @keyframes load {
   0% {
     left: 0;
