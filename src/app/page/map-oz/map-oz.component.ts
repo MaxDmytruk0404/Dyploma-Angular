@@ -95,7 +95,7 @@ export class MapOZComponent implements OnInit {
           Довгота: ${lng} <br> 
           Оператор: ${marker.operator} <br> 
           Поколіня: ${marker.generation} <br>
-          Пропускна здатність: ${marker.speed} <br>
+          Пропускна здатність: ${marker.speed} Мбіт/с<br>
           Статус: <span style="color: ${getStatusColor(marker.status)}">${
           marker.status
         }</span>
