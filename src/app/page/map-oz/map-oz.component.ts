@@ -170,7 +170,7 @@ export class MapOZComponent implements OnInit {
           До: ${conn.to} <br>
           Фізична довжина: ${conn.lengthKm} км <br>
           Тип волокна: ${conn.fiberType} <br>
-          Довжина хвилі: ${conn.frequency} нм <br>
+          Довжина хвилі: ${conn.frequency} <br>
           Пропускна здатність: ${conn.bandwidth} Gbps <br>
           Максимальне загасання регенераційної ділянки: ${conn.attenuation} дБ <br>
           ` +
