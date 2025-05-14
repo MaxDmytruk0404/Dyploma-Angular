@@ -12,7 +12,7 @@ ${t.map((i,a)=>`${a+1}) ${i.toString()}`).join(`
           \u0414\u043E\u0432\u0433\u043E\u0442\u0430: ${a} <br> 
           \u041E\u043F\u0435\u0440\u0430\u0442\u043E\u0440: ${t.operator} <br> 
           \u041F\u043E\u043A\u043E\u043B\u0456\u043D\u044F: ${t.generation} <br>
-          \u041F\u0440\u043E\u043F\u0443\u0441\u043A\u043D\u0430 \u0437\u0434\u0430\u0442\u043D\u0456\u0441\u0442\u044C: ${t.speed} <br>
+          \u041F\u0440\u043E\u043F\u0443\u0441\u043A\u043D\u0430 \u0437\u0434\u0430\u0442\u043D\u0456\u0441\u0442\u044C: ${t.speed} \u041C\u0431\u0456\u0442/\u0441<br>
           \u0421\u0442\u0430\u0442\u0443\u0441: <span style="color: ${g(t.status)}">${t.status}</span>
           `);function g(C){switch(C){case"\u041F\u0440\u0430\u0446\u044E\u0454":return"green";case"\u0422\u0438\u043C\u0447\u0430\u0441\u043E\u0432 \u043D\u0435 \u043F\u0440\u0430\u0446\u044E\u0454":return"orange";case"\u041D\u0435 \u043F\u0440\u0430\u0446\u044E\u0454":return"red";default:return"black"}}}),this.connections.forEach(t=>{let i=Ei.polyline(t.path,{color:t.color,weight:5,opacity:.7}).addTo(n);if(t.problem){let a=Ei.divIcon({className:"fa",html:'<i class="fas fa-map-marker-alt" style="color: grey; font-size: 24px;"></i>',iconSize:[30,30],iconAnchor:[10,20],popupAnchor:[0,-30]}),{lat:h,lng:g}=t.problem;Ei.marker([h,g],{icon:a}).addTo(n).bindPopup(`${t.reason}`)}i.bindPopup(""),i.on("popupopen",()=>{let a="";t.color=="green"?a="\u041F\u0440\u0430\u0446\u044E\u0454":t.color=="orange"?a="\u041F\u043E\u0448\u043A\u043E\u0434\u0436\u0435\u043D\u043E":a="\u041D\u0435 \u043F\u0440\u0430\u0446\u044E\u0454";let h=`
           \u0412\u0456\u0434: ${t.from} <br>
